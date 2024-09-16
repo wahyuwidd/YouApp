@@ -1,5 +1,6 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { UsersService } from './users.service';
+import { Model, Types } from 'mongoose';
 
 @Controller('users')
 export class UsersController {
@@ -7,6 +8,6 @@ export class UsersController {
 
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    return this.usersService.findOneById(id);
+    return this.usersService.findById(id);
   }
 }

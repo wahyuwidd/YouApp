@@ -7,7 +7,13 @@ export class Message extends Document {
   senderId: string;
 
   @Prop({ required: true })
+  senderUsername: string;
+
+  @Prop({ required: true })
   receiverId: string;
+
+  @Prop({ required: true })
+  receiverUsername: string;
 
   @Prop({ required: true })
   message: string;
