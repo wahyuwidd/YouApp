@@ -3,6 +3,9 @@ import { Document } from 'mongoose';
 
 @Schema()
 export class Message extends Document {
+  @Prop({ required: false })
+  senderProfilePic: string;
+
   @Prop({ required: true })
   senderId: string;
 
