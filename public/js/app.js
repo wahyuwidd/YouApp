@@ -5,26 +5,28 @@ document.addEventListener('DOMContentLoaded', function() {
       console.log('User logged in');
     } else {
       // Redirect to login page if not logged in
-      window.location.href = 'index.html';
+      window.location.href = 'login.html';
     }
+    const senderProfilePic = localStorage.getItem('avatar');
     const userid = localStorage.getItem('userid')
+    const username = localStorage.getItem('user_name_receiver')
 
 // Establish the Socket.IO connection
 const socket = io('http://localhost:3000', {
 });
 // Elements
 const chatBox = document.getElementById('chat-box');
-const idInput = document.getElementById('id-input');
+const yuchatuser = document.getElementById('yuchat-name');
+const yuprofile = document.getElementById('yuchat-profile-pic');
 const messageInput = document.getElementById('message-input');
 const sendBtn = document.getElementById('send-btn');
-console.log('idInput', idInput);
 
 const roomId = "myChatRoom";  // Define room ID, could be dynamic based on your logic
  // Register the user
  const userId = userid;
- 
- const userName = 'user1'
- const receiverId = document.getElementById('id-input').value;
+ yuchatuser.append(username);
+ yuprofile.src = localStorage.getItem('profilePic_receiver');
+ const receiverId = localStorage.getItem('user_id_receiver')
  socket.emit('register', { userId, receiverId });
 
 
@@ -39,7 +41,7 @@ appendMessage(`${data.senderId}: ${data.message}`);
 socket.on('chatHistory', (chatHistory) => {
   chatHistory.forEach((message) => {
     const isSent = message.senderId === userId
-      appendMessage(isSent ? `You: ${message.message}` : `${message.senderId}: ${message.message}`, isSent);
+      appendMessage(isSent ? `You: ${message.message}` : `${message.message}`, isSent);
   });
 });
 
@@ -58,25 +60,23 @@ if (e.key === 'Enter') {
 // Send message to the server
 function sendMessage() {
 const message = messageInput.value.trim();
-const receiverId = idInput.value.trim();
-
+const receiverId = localStorage.getItem('user_id_receiver')
 if (message !== '') {
   // Replace 'userA' with the actual sender's ID, and 'userB' with the receiver's ID
   // socket.emit('sendMessage', { room: roomId, message: message, senderId: 'userA', receiverId: 'userB' });
   // const receiverId = '66e6a299204444f672875390'; // Replace with actual receiver ID
   const receiveName = 'user2';
-  socket.emit('sendMessage', { senderId: userId, receiverId: receiverId, message });
+  socket.emit('sendMessage', { senderProfilePic, senderId: userId, receiverId: receiverId, message });
   // Append your own message to the chat box
-  const isSent = true 
-      appendMessage(isSent ? `You: ${message}` : `${senderId}: ${message}`, isSent);
-  messageInput.value = '';  // Clear the input field
-  receiverId.value = '';
+      const isSent = true 
+      appendMessage(isSent ? `You: ${message}` : `${message}`, isSent);
+      messageInput.value = '';  // Clear the input field
 }
 }
 
 socket.on('newMessage', (data) => {
   const isSent = data.senderId === userId
-      appendMessage(isSent ? `You: ${data.message}` : `${data.senderId}: ${data.message}`, isSent);
+  appendMessage(isSent ? `You: ${data.message}` : `${data.message}`, isSent);
 });
 
 // Append messages to the chat box

@@ -115,3 +115,63 @@ body {
     padding: 5px;
     border-radius: 4px;
   }
+
+  .chat-avatar {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .chat-container-home {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    width: 100%;
+  }
+
+  .yuchat-avatar-container {
+    display: flex;
+    gap: 10px;
+  }
+
+  .chat-avatar-home {
+    display: flex;
+    align-items: start;
+    flex-direction: column;
+    margin-bottom: 10px;
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .yuchat-message {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .yuchat-name {
+  }
+
+  #search-results {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  #search-results li {
+    padding: 10px;
+    margin: 5px 0;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  #search-results li:hover {
+    background-color: #ececec;
+  }
+
+  .search-box {
+    display: flex;
+  }
