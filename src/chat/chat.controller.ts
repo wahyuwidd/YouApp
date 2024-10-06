@@ -13,7 +13,8 @@ export class ChatController {
     @Body('receiverId') receiverId: string,
     @Body('message') message: string,
   ) {
-    return this.chatService.sendMessage(senderId, receiverId, message);
+    const senderProfilePic = 'https://i.pravatar.cc/300';
+    return this.chatService.sendMessage(senderProfilePic, senderId, receiverId, message);
   }
 
   @UseGuards(AuthGuard('jwt')) 
