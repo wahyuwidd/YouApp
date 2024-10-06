@@ -13,7 +13,7 @@ export class ChatService {
     private readonly usersService: UsersService,
   ) {}
 
-  async sendMessage(senderId: string, receiverId: string, message: string) {
+  async sendMessage(senderProfilePic: string, senderId: string, receiverId: string, message: string) {
     console.log(senderId);
     
     if (!Types.ObjectId.isValid(senderId) || !Types.ObjectId.isValid(receiverId)) {
@@ -28,7 +28,7 @@ export class ChatService {
       throw new UnauthorizedException('Sender or receiver is not registered');
     }
     
-    const newMessage = new this.messageModel({ senderUsername, senderId, receiverUsername, receiverId, message });
+    const newMessage = new this.messageModel({ senderProfilePic, senderUsername, senderId, receiverUsername, receiverId, message });
     await newMessage.save();
 
     // Send message notification via RabbitMQ
@@ -59,4 +59,24 @@ export class ChatService {
       })
       .sort({ createdAt: 1 });
   }
+
+  async getAllMessagesForUser(userId: string) {
+    const messages = await this.messageModel.find({
+      $or: [
+        { senderId: userId },
+        { receiverId: userId },
+      ],
+    })
+    .select(['senderProfilePic', 'senderId', 'senderUsername', 'message'])
+    .exec();
+  
+    // Ensure the result is an array and explicitly map it if needed
+    return messages.map((msg) => ({
+      senderProfilePic: msg.senderProfilePic,
+      senderId: msg.senderId,
+      senderUsername: msg.senderUsername,
+      message: msg.message,
+    }));
+  }
+  
 }
