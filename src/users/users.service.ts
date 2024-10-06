@@ -21,4 +21,11 @@ export class UsersService {
   async findById(userId: string): Promise<User> {
     return this.userModel.findById(userId).exec();
   }
+
+  async searchUsers(query: string): Promise<User[]> {
+    // Check if the search query is being matched to the username field
+    return this.userModel
+      .find({ username: { $regex: query, $options: 'i' } })  // Searching by username field
+      .select(['username', 'profilePic']);  // You can select other fields if needed
+  }
 }
